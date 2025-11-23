@@ -26,20 +26,8 @@ const getCompanyInbox = (): string => {
 const contactSchema = z.object({
 	name: z.string().min(2, 'Name is required.'),
 	email: z.string().email('Valid email required.'),
-	context: z.string().optional(),
-	needs: z
-		.array(
-			z.enum(['strategy', 'workflow', 'training', 'governance'], {
-				required_error: 'Select at least one need.',
-			})
-		)
-		.optional(),
+	type: z.enum(['project', 'collab', 'hello']).default('hello'),
 	message: z.string().max(2000).optional(),
-});
-
-const investorSchema = z.object({
-	email: z.string().email('Valid email required.'),
-	fund: z.string().optional(),
 });
 
 const safelySend = async (envelope: EmailEnvelope) => {
@@ -54,47 +42,47 @@ const safelySend = async (envelope: EmailEnvelope) => {
 	}
 };
 
-const renderNeeds = (needs: string[]) => (needs.length ? needs.join(', ') : 'Not specified');
-
 export const server = {
 	contactForm: defineAction({
 		accept: 'form',
 		input: contactSchema,
 		handler: async (input) => {
 			const companyInbox = getCompanyInbox();
-			const normalizedNeeds = input.needs ?? [];
-			const missionDetails = input.message?.trim() || 'No additional details provided.';
-			const teamContext = input.context?.trim() || 'Unspecified';
+			const messagePayload = input.message?.trim() || 'No additional details provided.';
+            const signalTypeMap: Record<string, string> = {
+                project: 'Project Request',
+                collab: 'Collaboration Idea',
+                hello: 'Just Saying Hi'
+            };
+            const signalType = signalTypeMap[input.type] || input.type;
 
 			await safelySend({
 				to: input.email,
-				subject: 'Spacewalkers mission received',
+				subject: 'Laguna Studio: Signal Received',
 				from: env.EMAIL_CONFIRMATION_FROM ?? env.EMAIL_FROM ?? companyInbox,
 				textBody: [
 					`Hi ${input.name},`,
 					'',
-					'Thanks for reaching out to Spacewalkers. Our team has received your mission details and will respond shortly.',
+					'We received your signal. If this was a project inquiry, one of us will review the specs and get back to you shortly.',
 					'',
-					`Mission focus: ${renderNeeds(normalizedNeeds)}`,
-					`Team context: ${teamContext}`,
+					`Signal Type: ${signalType}`,
 					'',
-					'— Spacewalkers Flight Crew',
+					'— The Crew @ Laguna Studio Code',
 				].join('\n'),
 			});
 
 			await safelySend({
 				to: companyInbox,
 				bcc: archiveBcc,
-				subject: `New contact from ${input.name}`,
+				subject: `[Laguna] New Signal from ${input.name}`,
 				replyTo: input.email,
 				textBody: [
 					`Name: ${input.name}`,
 					`Email: ${input.email}`,
-					`Context: ${teamContext}`,
-					`Needs: ${renderNeeds(normalizedNeeds)}`,
+					`Type: ${signalType}`,
 					'',
-					'Mission details:',
-					missionDetails,
+					'Payload:',
+					messagePayload,
 				].join('\n'),
 				metadata: {
 					form: 'contact',
@@ -104,41 +92,4 @@ export const server = {
 			return { ok: true };
 		},
 	}),
-	investorRequest: defineAction({
-		accept: 'form',
-		input: investorSchema,
-		handler: async (input) => {
-			const companyInbox = getCompanyInbox();
-			const fundName = input.fund?.trim() || 'Unspecified fund';
-
-			await safelySend({
-				to: input.email,
-				subject: 'Investor deck request received',
-				from: env.EMAIL_CONFIRMATION_FROM ?? env.EMAIL_FROM ?? companyInbox,
-				textBody: [
-					'Thanks for your interest in Spacewalkers.',
-					'Our founding team will review your request and follow up with the latest materials.',
-					'',
-					`Fund / Firm: ${fundName}`,
-					'',
-					'— Spacewalkers Flight Crew',
-				].join('\n'),
-			});
-
-			await safelySend({
-				to: companyInbox,
-				bcc: archiveBcc,
-				subject: `Investor request from ${input.email}`,
-				replyTo: input.email,
-				textBody: [`Investor email: ${input.email}`, `Fund: ${fundName}`].join('\n'),
-				metadata: {
-					form: 'investor',
-				},
-			});
-
-			return { ok: true };
-		},
-	}),
 };
-
-
