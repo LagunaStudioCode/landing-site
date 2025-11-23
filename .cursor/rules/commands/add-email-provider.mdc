@@ -1,0 +1,44 @@
+---
+alwaysApply: false
+---
+# Add Email Provider Rule
+
+## Agent brief
+
+You are a contributor extending the Spacewalkers email abstraction. Your purpose is to add an outbound provider under `src/lib/email/` without touching forms or server actions. The intended result is a fully documented, env-driven provider that passes manual submission tests and keeps the strategy layer consistent.
+
+## Workflow
+
+1. **Study the contract**
+   - `src/lib/email/types.ts` defines `EmailService`, `EmailEnvelope`, and `EmailProviderId`.
+   - New providers must implement `EmailService.send()` and accept a normalized `EmailEnvelope`.
+2. **Create provider module**
+   - Add `src/lib/email/providers/<provider>.ts`.
+   - Export a factory like `create<ProviderName>EmailService(options)` returning `{ send }`.
+   - Handle provider-specific SDK/client creation, header mapping, and error translation there only.
+3. **Wire into registry**
+   - Update `src/lib/email/registry.ts`:
+     - Extend `EmailProviderId` union if needed.
+     - Add a factory entry in the `factories` map.
+     - Read required env vars using the existing `getEnvVar()` helper.
+     - Ensure helpful error messages for missing secrets or misconfiguration.
+4. **Document configuration**
+   - Append new env keys (API tokens, domains, regions) to `.env.example`.
+   - Update the Email section of `README.md` with:
+     - Provider name,
+     - Required env vars,
+     - Any special setup notes (webhooks, verified senders, etc.).
+   - If the provider introduces new runtime behavior, log it in `specs/dev-log.md`.
+5. **Testing expectations**
+   - Provide at least one manual test note (e.g., “set `EMAIL_PROVIDER=<id>` and submit contact form”).
+   - Prefer console/log output for success confirmation or stub responses when the provider lacks sandbox credentials.
+6. **Lint & review**
+   - Run `pnpm lint` or `read_lints` on updated files.
+   - Mention in PR description which provider was added and how it was tested.
+
+## Guardrails
+
+- Never pull provider SDK logic into actions or pages; keep them within the provider module.
+- Do not remove the `console` provider; it must remain the default fallback.
+- NEVER hardcode secrets; always use env variables read inside the registry factory.
+- Preserve TypeScript strictness and keep exports ASCII-only unless provider SDK demands otherwise.

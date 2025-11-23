@@ -1,0 +1,257 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { actions, isInputError } from 'astro:actions';
+
+const investorResult = Astro.getActionResult(actions.investorRequest);
+const investorInputErrors = isInputError(investorResult?.error) ? investorResult.error.fields : {};
+const investorHasInputErrors = Object.keys(investorInputErrors).length > 0;
+const investorGeneralError = investorResult?.error && !investorHasInputErrors;
+const investorSuccess = investorResult && !investorResult.error;
+
+const roadmap = [
+  {
+    phase: "Phase 1: The Studio (Now)",
+    desc: "High-margin implementation services building a reputation and data. We deploy our 'Space Stack' manually.",
+    status: "current"
+  },
+  {
+    phase: "Phase 2: The Platform (6-12mo)",
+    desc: "Productize internal tooling into 'Mission Control'. Standardization of evals, observability, and agent orchestration.",
+    status: "next"
+  },
+  {
+    phase: "Phase 3: The Ecosystem (18mo+)",
+    desc: "SaaS rollout to broader market. Self-serve enablement for engineering teams globally.",
+    status: "future"
+  }
+];
+
+export const prerender = false;
+---
+
+<Layout title="Spacewalkers | Investor Relations">
+	<header class="fixed w-full top-0 z-50 glass-panel border-b-0">
+		<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+			<a href="/" class="font-bold text-2xl tracking-wider text-white hover:text-neon-cyan transition-colors">SPACEWALKERS</a>
+			<nav class="hidden md:flex gap-8">
+				<a href="/#services" class="hover:text-neon-cyan transition-colors text-gray-300">Services</a>
+				<a href="/#process" class="hover:text-neon-cyan transition-colors text-gray-300">Process</a>
+				<a href="/#about" class="hover:text-neon-cyan transition-colors text-gray-300">About</a>
+				<span class="text-neon-cyan">Investors</span>
+			</nav>
+            <a href="#contact" class="md:hidden text-neon-cyan">Menu</a>
+		</div>
+	</header>
+
+	<main>
+		<!-- Hero Section -->
+		<section class="relative min-h-[80vh] flex items-center justify-center pt-20 overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-0 left-0 w-2/3 h-2/3 bg-neon-cyan/5 blur-[150px] rounded-full -translate-x-1/4 -translate-y-1/4"></div>
+                <div class="absolute bottom-0 right-0 w-1/2 h-1/2 bg-deep-magenta/10 blur-[120px] rounded-full translate-x-1/4 translate-y-1/4"></div>
+                 <svg class="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="hex-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                            <path d="M30 0 L60 15 L60 45 L30 60 L0 45 L0 15 Z" fill="none" stroke="white" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#hex-grid)" />
+                </svg>
+            </div>
+
+			<div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+                <div class="inline-block px-4 py-1 mb-6 rounded-full border border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan text-sm tracking-widest uppercase">
+                    Investor Briefing
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight text-white mb-6">
+                    Building the <span class="text-gradient">Infrastructure</span> of the AI Age.
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                    Spacewalkers is bridging the "Toy-to-Prod" chasm. We are productizing the enablement layer for the next generation of AI-native companies.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#contact" class="btn-primary px-8 py-4 rounded text-center">Request Pitch Deck</a>
+                    <a href="#opportunity" class="btn-secondary px-8 py-4 rounded text-center">View Opportunity</a>
+                </div>
+			</div>
+		</section>
+
+        <!-- The Problem / Opportunity -->
+        <section id="opportunity" class="py-24 bg-space-black relative">
+             <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">The "Toy-to-Prod" Chasm</h2>
+                        <div class="space-y-6 text-gray-400 text-lg">
+                            <p>
+                                <strong class="text-white">The Problem:</strong> Every engineering team is being asked to "build with AI." But 90% of pilots fail to reach production. Why? Because gluing together LangChain, Pinecone, and OpenAI APIs is easy for a weekend hackathon, but a nightmare for reliable, secure, compliant software.
+                            </p>
+                            <p>
+                                <strong class="text-white">The Gap:</strong> There is no standard "OS" for AI Engineering yet. Teams are reinventing the wheel, building fragile custom tooling instead of shipping value.
+                            </p>
+                            <p>
+                                <strong class="text-white">The Opportunity:</strong> Spacewalkers provides the missing <span class="text-neon-cyan">enablement layer</span>. We don't just consult; we deploy a standardized, battle-tested stack that guarantees production-readiness.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-space-dark p-8 rounded-xl border border-gray-800 relative flex flex-col items-center justify-center min-h-[300px]">
+                        <!-- Improved Visualization of the Chasm -->
+                        <div class="relative w-full max-w-md">
+                            <!-- Left Side: Prototype -->
+                            <div class="absolute top-0 left-0 text-center w-24">
+                                <div class="w-24 h-24 rounded-lg bg-gray-800 border border-gray-600 flex items-center justify-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-gray-400">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </svg>
+                                </div>
+                                <div class="text-sm font-bold text-gray-300">Prototype</div>
+                                <div class="text-xs text-gray-500">Unreliable</div>
+                            </div>
+
+                            <!-- Right Side: Production -->
+                            <div class="absolute top-0 right-0 text-center w-24">
+                                <div class="w-24 h-24 rounded-lg bg-neon-cyan/10 border border-neon-cyan flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(102,252,241,0.2)]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-neon-cyan">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                                    </svg>
+                                </div>
+                                <div class="text-sm font-bold text-neon-cyan">Production</div>
+                                <div class="text-xs text-gray-500">Robust System</div>
+                            </div>
+
+                            <!-- The Gap -->
+                            <div class="absolute top-8 left-28 right-28 h-0.5 border-t-2 border-dashed border-gray-700"></div>
+                            
+                            <!-- The Bridge (Spacewalkers) -->
+                            <div class="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                                <div class="px-3 py-1 bg-space-black border border-neon-cyan text-neon-cyan text-xs font-bold uppercase rounded shadow-lg z-10 mb-2">
+                                    The Enablement Layer
+                                </div>
+                                <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Arch -->
+                                    <path d="M0 40 Q 60 -10 120 40" stroke="#66FCF1" stroke-width="2" fill="none" />
+                                    <!-- Supports -->
+                                    <path d="M20 32 L 20 40" stroke="#66FCF1" stroke-width="1" opacity="0.5"/>
+                                    <path d="M40 22 L 40 40" stroke="#66FCF1" stroke-width="1" opacity="0.5"/>
+                                    <path d="M60 18 L 60 40" stroke="#66FCF1" stroke-width="1" opacity="0.5"/>
+                                    <path d="M80 22 L 80 40" stroke="#66FCF1" stroke-width="1" opacity="0.5"/>
+                                    <path d="M100 32 L 100 40" stroke="#66FCF1" stroke-width="1" opacity="0.5"/>
+                                </svg>
+                            </div>
+                            
+                            <!-- Bottom label -->
+                            <div class="absolute -top-32 left-0 right-0 text-center">
+                                <p class="text-xs text-gray-400 max-w-xs mx-auto">
+                                    Bridging the gap with standardized evals, observability, and infrastructure.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- The Wedge & Roadmap -->
+        <section id="roadmap" class="py-24 relative overflow-hidden border-t border-white/5">
+            <div class="absolute inset-0 bg-space-dark/50 skew-y-[-2deg] transform origin-top-left z-0"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">From Service to Platform</h2>
+                    <p class="text-xl text-gray-400 max-w-2xl mx-auto">Our "Service-Led Growth" strategy allows us to fund development while building the exact product the market needs.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    {roadmap.map((step, index) => (
+                        <div class={`p-8 rounded-xl border ${step.status === 'current' ? 'border-neon-cyan bg-neon-cyan/5' : 'border-gray-700 bg-space-black'} relative`}>
+                            {step.status === 'current' && (
+                                <div class="absolute -top-3 left-8 px-3 py-1 bg-neon-cyan text-space-black text-xs font-bold uppercase tracking-wider rounded">
+                                    Current Focus
+                                </div>
+                            )}
+                            <h3 class="text-xl font-bold text-white mb-4">{step.phase}</h3>
+                            <p class="text-gray-400">{step.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        <!-- Traction / Credibility -->
+        <section class="py-24 bg-space-black">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="glass-panel p-12 rounded-2xl border border-white/10 text-center">
+                     <h2 class="text-3xl font-bold text-white mb-8">Why Us?</h2>
+                     <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+                        We aren't consultants reading Twitter threads. We are senior engineers who have built, scaled, and maintained distributed systems for decades. We know what "production-grade" actually means.
+                     </p>
+                     <div class="grid md:grid-cols-3 gap-12">
+                        <div>
+                            <div class="text-4xl font-bold text-neon-cyan mb-2">Deep Tech</div>
+                            <div class="text-gray-300">Backgrounds in Distributed Systems & ML Infra</div>
+                        </div>
+                         <div>
+                            <div class="text-4xl font-bold text-deep-magenta mb-2">Builders</div>
+                            <div class="text-gray-300">We write code, deploy models, and manage the stack</div>
+                        </div>
+                         <div>
+                            <div class="text-4xl font-bold text-neon-cyan mb-2">Pragmatic</div>
+                            <div class="text-gray-300">Focused on reliability and ROI, not just hype</div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+		<!-- Contact Section -->
+		<section id="contact" class="py-24 bg-gradient-to-b from-space-black to-space-dark border-t border-white/10">
+			<div class="max-w-4xl mx-auto px-6 text-center">
+				<h2 class="text-4xl font-bold text-white mb-6">Partner with Spacewalkers</h2>
+				<p class="text-xl text-gray-400 mb-12">
+					We are currently opening our Pre-Seed round to select strategic partners. 
+                    If you believe in the future of AI Engineering, let's talk.
+				</p>
+				
+                <form
+                    method="POST"
+                    action={actions.investorRequest}
+                    class="max-w-md mx-auto bg-white/5 p-8 rounded-xl border border-white/10 space-y-6 text-left"
+                >
+                    {investorSuccess && (
+                        <p class="text-neon-cyan text-sm text-center">
+                            Request received. We will be in touch shortly.
+                        </p>
+                    )}
+                    {investorGeneralError && (
+                        <p class="text-rose-400 text-sm text-center">
+                            Unable to relay your request. Please try again in a moment.
+                        </p>
+                    )}
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Work Email</label>
+                        <input type="email" id="email" name="email" required class="w-full bg-black/50 border border-gray-700 rounded px-4 py-2 focus:border-neon-cyan focus:outline-none text-white" placeholder="vc@fund.com">
+                        {investorInputErrors.email && (
+                            <p class="text-sm text-rose-400 mt-1">{investorInputErrors.email.join(', ')}</p>
+                        )}
+                    </div>
+                     <div>
+                        <label for="fund" class="block text-sm font-medium text-gray-300 mb-2">Fund / Firm Name</label>
+                        <input type="text" id="fund" name="fund" class="w-full bg-black/50 border border-gray-700 rounded px-4 py-2 focus:border-neon-cyan focus:outline-none text-white" placeholder="Andromeda Ventures">
+                        {investorInputErrors.fund && (
+                            <p class="text-sm text-rose-400 mt-1">{investorInputErrors.fund.join(', ')}</p>
+                        )}
+                    </div>
+                    <button type="submit" class="w-full btn-primary py-3 rounded font-bold text-lg">Request Access</button>
+                    <p class="text-center text-gray-400 text-xs">
+                        By submitting you agree to be contacted regarding Spacewalkers investment materials.
+                    </p>
+                </form>
+			</div>
+		</section>
+	</main>
+
+    <footer class="py-8 border-t border-white/5 text-center text-gray-500 text-sm">
+        <p>&copy; {new Date().getFullYear()} Spacewalkers. All rights reserved. | <a href="/" class="text-neon-cyan hover:underline">Return to Main Site</a></p>
+    </footer>
+</Layout>
+

@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Spacewalkers Theme Palette - Available as utilities e.g. bg-space-black */
+  --color-space-black: #0B0C10;
+  --color-space-dark: #1F2833;
+  --color-space-grey: #C5C6C7;
+  --color-neon-cyan: #66FCF1;
+  --color-neon-teal: #45A29E;
+  --color-deep-magenta: #C3073F;
+
+  --font-heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Base Styles */
+html {
+  background-color: var(--color-space-black);
+  color: var(--color-space-grey);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: white;
+}
+
+/* Custom Components / Utilities */
+.glass-panel {
+  background: rgba(31, 40, 51, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(102, 252, 241, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, var(--color-neon-cyan), var(--color-neon-teal));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-primary {
+  background-color: var(--color-neon-cyan);
+  color: var(--color-space-black);
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-neon-teal);
+  box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--color-neon-cyan);
+  color: var(--color-neon-cyan);
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(102, 252, 241, 0.1);
+  box-shadow: 0 0 15px rgba(102, 252, 241, 0.2);
+}

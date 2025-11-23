@@ -1,11 +1,390 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { actions, isInputError } from 'astro:actions';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const contactResult = Astro.getActionResult(actions.contactForm);
+const contactInputErrors = isInputError(contactResult?.error) ? contactResult.error.fields : {};
+const contactHasInputErrors = Object.keys(contactInputErrors).length > 0;
+const contactGeneralError = contactResult?.error && !contactHasInputErrors;
+const contactSuccess = contactResult && !contactResult.error;
+
+export const prerender = false;
+
+// Assets would be imported here if we had them.
+// For now we will use inline SVGs or CSS shapes.
 ---
 
 <Layout>
-	<Welcome />
+	<header class="fixed w-full top-0 z-50 glass-panel border-b-0">
+		<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+			<div class="font-bold text-2xl tracking-wider text-white">SPACEWALKERS</div>
+			<nav class="hidden md:flex gap-8">
+				<a href="#services" class="hover:text-neon-cyan transition-colors">Services</a>
+				<a href="#process" class="hover:text-neon-cyan transition-colors">Process</a>
+				<a href="#about" class="hover:text-neon-cyan transition-colors">About</a>
+                <a href="/investors" class="hover:text-neon-cyan transition-colors">Investors</a>
+				<a href="#contact" class="text-neon-cyan hover:text-white transition-colors">Contact</a>
+			</nav>
+            <a href="#contact" class="md:hidden text-neon-cyan">Menu</a>
+		</div>
+	</header>
+
+	<main>
+		<!-- Hero Section -->
+		<section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-0 right-0 w-2/3 h-2/3 bg-deep-magenta/20 blur-[120px] rounded-full translate-x-1/4 -translate-y-1/4"></div>
+                <div class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-neon-cyan/10 blur-[100px] rounded-full -translate-x-1/4 translate-y-1/4"></div>
+                <svg class="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                </svg>
+            </div>
+
+			<div class="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+				<div class="space-y-8">
+					<div class="inline-block px-4 py-1 rounded-full border border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan text-sm tracking-widest uppercase">
+						AI Enablement
+					</div>
+					<h1 class="text-5xl md:text-7xl font-bold leading-tight text-white">
+						Navigate the <span class="text-gradient">AI Frontier</span> with Confidence.
+					</h1>
+					<p class="text-xl md:text-2xl text-gray-300 max-w-lg">
+						We help engineering teams and forward-thinking companies cut through the noise, select the right tools, and build practical AI workflows.
+					</p>
+					<div class="flex flex-col sm:flex-row gap-4">
+						<a href="#contact" class="btn-primary px-8 py-4 rounded text-center">Start Your Mission</a>
+						<a href="#services" class="btn-secondary px-8 py-4 rounded text-center">Explore Services</a>
+					</div>
+				</div>
+                <div class="hidden md:flex items-center justify-center relative">
+                    <!-- Abstract Hero Graphic -->
+                    <svg class="w-full max-w-lg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#66FCF1;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#45A29E;stop-opacity:1" />
+                            </linearGradient>
+                            <filter id="glow-intense">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- Central Star/System Core -->
+                        <circle cx="250" cy="250" r="30" fill="url(#grad1)" filter="url(#glow-intense)" class="animate-pulse-slow" />
+                        <circle cx="250" cy="250" r="200" fill="none" stroke="#1F2833" stroke-width="1" opacity="0.5" />
+
+                        <!-- Orbit Ring 1 (Inner) -->
+                        <g class="animate-orbit-1 origin-center">
+                            <circle cx="250" cy="250" r="80" fill="none" stroke="#66FCF1" stroke-width="1" stroke-dasharray="4 4" opacity="0.3" />
+                            <circle cx="250" cy="170" r="5" fill="#66FCF1" filter="url(#glow-intense)" />
+                        </g>
+
+                        <!-- Orbit Ring 2 (Middle) -->
+                        <g class="animate-orbit-2 origin-center">
+                            <circle cx="250" cy="250" r="130" fill="none" stroke="#C3073F" stroke-width="1" stroke-dasharray="20 10" opacity="0.3" />
+                            <circle cx="250" cy="380" r="6" fill="#C3073F" filter="url(#glow-intense)" />
+                        </g>
+
+                        <!-- Orbit Ring 3 (Outer) -->
+                        <g class="animate-orbit-3 origin-center">
+                            <circle cx="250" cy="250" r="180" fill="none" stroke="#45A29E" stroke-width="2" stroke-dasharray="1 10" opacity="0.2" />
+                            <circle cx="430" cy="250" r="4" fill="#45A29E" />
+                        </g>
+                    </svg>
+
+                </div>
+			</div>
+		</section>
+
+        <!-- Who We Help -->
+        <section class="py-24 bg-space-black relative">
+             <div class="max-w-7xl mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white">AI Enablement for <span class="text-neon-cyan">Every Scale</span></h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="text-2xl font-bold text-white mb-4">Forward-Thinking Companies</h3>
+                        <p class="text-gray-300">You need a strategy that goes beyond chatbots. We align AI adoption with your business goals, ensuring ROI and security.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 border-neon-cyan/30">
+                        <h3 class="text-2xl font-bold text-white mb-4">Engineering Teams</h3>
+                        <p class="text-gray-300">Drowning in new tools? We help you build a coherent stack, automate grunt work, and ship AI-powered features faster.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="text-2xl font-bold text-white mb-4">Professionals & Individuals</h3>
+                        <p class="text-gray-300">Master the tools that matter. We provide focused training and workflow design to supercharge your personal productivity.</p>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- Services -->
+        <section id="services" class="py-24 relative overflow-hidden">
+            <div class="absolute inset-0 bg-space-dark/50 skew-y-3 transform origin-bottom-right z-0"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Practical AI Enablement</h2>
+                    <p class="text-xl text-gray-400 max-w-2xl mx-auto">We don't sell hype. We build systems.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-8 border border-gray-800 hover:border-neon-cyan/50 rounded-lg bg-space-black transition-colors">
+                        <div class="w-12 h-12 bg-neon-cyan/10 rounded-full flex items-center justify-center mb-6 text-neon-cyan">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Tooling Assessment & Strategy</h3>
+                        <p class="text-gray-400">Stop guessing. We evaluate your current stack and needs to recommend the best-in-class AI tools for your specific context.</p>
+                    </div>
+
+                    <div class="p-8 border border-gray-800 hover:border-neon-cyan/50 rounded-lg bg-space-black transition-colors">
+                         <div class="w-12 h-12 bg-deep-magenta/10 rounded-full flex items-center justify-center mb-6 text-deep-magenta">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Workflow Design & Automation</h3>
+                        <p class="text-gray-400">AI isn't magic; it's engineering. We design robust workflows that integrate seamlessly into your existing processes.</p>
+                    </div>
+
+                    <div class="p-8 border border-gray-800 hover:border-neon-cyan/50 rounded-lg bg-space-black transition-colors">
+                         <div class="w-12 h-12 bg-neon-teal/10 rounded-full flex items-center justify-center mb-6 text-neon-teal">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.499 5.216 50.59 50.59 0 00-2.658.812m-15.482 0a50.697 50.697 0 0115.483 0m-15.483 0c.39.082.78.166 1.17.253m13.143-.253c.4.087.79.175 1.18.266" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Team Training & Workshops</h3>
+                        <p class="text-gray-400">Level up your team. Hands-on sessions to move from "prompt guessing" to systematic engineering.</p>
+                    </div>
+
+                    <div class="p-8 border border-gray-800 hover:border-neon-cyan/50 rounded-lg bg-space-black transition-colors">
+                         <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 text-white">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Governance & Safety</h3>
+                        <p class="text-gray-400">Innovate responsibly. We help establish guardrails and policies to use AI securely and ethically.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process -->
+        <section id="process" class="py-24 bg-space-black relative">
+             <div class="max-w-7xl mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white">Your <span class="text-gradient">Flight Plan</span></h2>
+                
+                <div class="relative">
+                    <!-- Connecting Line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-800 -translate-y-1/2 z-0"></div>
+
+                    <div class="grid md:grid-cols-4 gap-8 relative z-10">
+                        <!-- Step 1 -->
+                        <div class="bg-space-dark p-6 rounded-xl border border-gray-700 relative">
+                            <div class="w-10 h-10 bg-neon-cyan text-space-black font-bold rounded-full flex items-center justify-center mb-4 text-lg">1</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Discovery</h3>
+                            <p class="text-sm text-gray-400">We analyze your current state, identifying bottlenecks and high-impact opportunities.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="bg-space-dark p-6 rounded-xl border border-gray-700 relative mt-8 md:mt-0">
+                             <div class="w-10 h-10 bg-neon-cyan text-space-black font-bold rounded-full flex items-center justify-center mb-4 text-lg">2</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Roadmap</h3>
+                            <p class="text-sm text-gray-400">We build a tailored strategy, selecting the right tools and defining clear milestones.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="bg-space-dark p-6 rounded-xl border border-gray-700 relative">
+                             <div class="w-10 h-10 bg-neon-cyan text-space-black font-bold rounded-full flex items-center justify-center mb-4 text-lg">3</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Pilot</h3>
+                            <p class="text-sm text-gray-400">We implement a proof-of-concept workflow to validate value before scaling.</p>
+                        </div>
+                        <!-- Step 4 -->
+                        <div class="bg-space-dark p-6 rounded-xl border border-gray-700 relative mt-8 md:mt-0">
+                             <div class="w-10 h-10 bg-neon-cyan text-space-black font-bold rounded-full flex items-center justify-center mb-4 text-lg">4</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Liftoff</h3>
+                            <p class="text-sm text-gray-400">We roll out the solution, training your team and ensuring long-term adoption.</p>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- Proof / About -->
+        <section id="about" class="py-24 relative border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-8">Captained by Industry Veterans</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12">
+                    Our team brings decades of software engineering experience and practical AI application. We don't just talk about AI; we build with it every day.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-8 opacity-50 grayscale">
+                    <!-- Placeholder Logos -->
+                    <div class="h-12 flex items-center text-xl font-bold text-white">ACME Corp</div>
+                    <div class="h-12 flex items-center text-xl font-bold text-white">Stark Industries</div>
+                    <div class="h-12 flex items-center text-xl font-bold text-white">Wayne Ent</div>
+                    <div class="h-12 flex items-center text-xl font-bold text-white">Cyberdyne</div>
+                </div>
+            </div>
+        </section>
+
+		<!-- Contact Section -->
+		<section id="contact" class="py-24 bg-gradient-to-b from-space-black to-space-dark border-t border-white/10">
+			<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16">
+				<div>
+					<h2 class="text-4xl font-bold text-white mb-6">Ready to Launch?</h2>
+					<p class="text-xl text-gray-400 mb-8">
+						Tell us about your mission. We'll help you chart the course. Whether you're just exploring or ready to build, we're here to help.
+					</p>
+                    
+                    <div class="space-y-4 text-gray-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-neon-cyan">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </svg>
+                            </div>
+                            <span>contact@spacewalkers.ai</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                             <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-neon-cyan">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                </svg>
+                            </div>
+                            <span>Remote / Global</span>
+                        </div>
+                    </div>
+				</div>
+
+				<form
+					method="POST"
+					action={actions.contactForm}
+					class="bg-white/5 p-8 rounded-xl border border-white/10 space-y-6"
+				>
+					{contactSuccess && (
+						<p class="text-center text-neon-cyan text-sm">
+							Message received. Stand by for contact.
+						</p>
+					)}
+					{contactGeneralError && (
+						<p class="text-center text-rose-400 text-sm">
+							We hit a snag sending your transmission. Please try again shortly.
+						</p>
+					)}
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="name" class="block text-sm font-medium text-gray-300">Name</label>
+                            <input type="text" id="name" name="name" required class="w-full bg-black/50 border border-gray-700 rounded px-4 py-2 focus:border-neon-cyan focus:outline-none text-white" placeholder="Major Tom">
+							{contactInputErrors.name && (
+								<p class="text-sm text-rose-400">
+									{contactInputErrors.name.join(', ')}
+								</p>
+							)}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                            <input type="email" id="email" name="email" required class="w-full bg-black/50 border border-gray-700 rounded px-4 py-2 focus:border-neon-cyan focus:outline-none text-white" placeholder="tom@example.com">
+							{contactInputErrors.email && (
+								<p class="text-sm text-rose-400">
+									{contactInputErrors.email.join(', ')}
+								</p>
+							)}
+                        </div>
+                    </div>
+
+                     <div class="space-y-2">
+                        <label for="context" class="block text-sm font-medium text-gray-300">Team Context</label>
+                        <select id="context" name="context" class="w-full bg-black/50 border border-gray-700 rounded px-4 py-2 focus:border-neon-cyan focus:outline-none text-white">
+                            <option value="" disabled selected>Select your team size...</option>
+                            <option value="individual">Individual / Professional</option>
+                            <option value="startup">Startup (&lt; 50)</option>
+                            <option value="scaleup">Scaleup (50 - 200)</option>
+                            <option value="enterprise">Enterprise (200+)</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">What do you need help with?</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="needs" value="strategy" class="form-checkbox text-neon-cyan rounded bg-black/50 border-gray-700">
+                                <span class="text-sm text-gray-400">Strategy & Tools</span>
+                            </label>
+                             <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="needs" value="workflow" class="form-checkbox text-neon-cyan rounded bg-black/50 border-gray-700">
+                                <span class="text-sm text-gray-400">Workflow Design</span>
+                            </label>
+                             <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="needs" value="training" class="form-checkbox text-neon-cyan rounded bg-black/50 border-gray-700">
+                                <span class="text-sm text-gray-400">Training</span>
+                            </label>
+                             <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="needs" value="governance" class="form-checkbox text-neon-cyan rounded bg-black/50 border-gray-700">
+                                <span class="text-sm text-gray-400">Governance</span>
+                            </label>
+                        </div>
+						{contactInputErrors.needs && (
+							<p class="text-sm text-rose-400">
+								{contactInputErrors.needs.join(', ')}
+							</p>
+						)}
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="message" class="block text-sm font-medium text-gray-300">Mission Details</label>
+                        <textarea id="message" name="message" rows="4" class="w-full bg-black/50 border border-gray-700 rounded px-4 py-2 focus:border-neon-cyan focus:outline-none text-white" placeholder="Tell us more about your goals..."></textarea>
+						{contactInputErrors.message && (
+							<p class="text-sm text-rose-400">
+								{contactInputErrors.message.join(', ')}
+							</p>
+						)}
+                    </div>
+
+					<button type="submit" class="w-full btn-primary py-3 rounded font-bold text-lg">
+						Initiate Contact
+					</button>
+				</form>
+			</div>
+		</section>
+	</main>
+
+    <footer class="py-8 border-t border-white/5 text-center text-gray-500 text-sm">
+        <p>&copy; {new Date().getFullYear()} Spacewalkers. All rights reserved. | <a href="/investors" class="hover:text-neon-cyan transition-colors">Investors</a></p>
+    </footer>
 </Layout>
+
+<style>
+    /* Simple animation utilities */
+    .animate-pulse-slow {
+        animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .8; }
+    }
+
+    .origin-center { transform-origin: center; }
+    .animate-orbit-1 { animation: spin 12s linear infinite; }
+    .animate-orbit-2 { animation: spin 18s linear infinite reverse; }
+    .animate-orbit-3 { animation: spin 30s linear infinite; }
+    @keyframes spin { 
+        from { transform: rotate(0deg); } 
+        to { transform: rotate(360deg); } 
+    }
+</style>
