@@ -28,12 +28,14 @@ All email routing is centralized in `src/lib/email/`, so swapping providers neve
 
 | Variable | Description |
 | --- | --- |
-| `EMAIL_PROVIDER` | `console` for dev logging, or `sendgrid` for SendGrid REST delivery. |
+| `EMAIL_PROVIDER` | `console` for dev logging, `sendgrid` for SendGrid REST delivery, or `zeptomail` for ZeptoMail API delivery. |
 | `EMAIL_FROM` | Default verified sender (used when actions omit `from`). |
 | `EMAIL_CONFIRMATION_FROM` | Optional override for confirmation emails. |
 | `EMAIL_COMPANY_INBOX` | Internal triage inbox for new submissions. |
 | `EMAIL_BCC` | Optional archive recipient (leave blank to disable). |
 | `SENDGRID_API_KEY` | Required when `EMAIL_PROVIDER=sendgrid`. |
+| `ZEPTOMAIL_TOKEN` | Required when `EMAIL_PROVIDER=zeptomail`; full token including the `Zoho-enczapikey` prefix. |
+| `ZEPTOMAIL_URL` | Optional override for the ZeptoMail API base URL (defaults to `https://api.zeptomail.com/v1.1/email`). |
 
 Restart the dev server after changing provider-specific env vars so the email registry picks up the new configuration.
 

@@ -1,5 +1,6 @@
 import { createConsoleEmailService } from './providers/console';
 import { createSendgridEmailService } from './providers/sendgrid';
+import { createZeptoMailEmailService } from './providers/zeptomail';
 import type { EmailProviderFactory, EmailProviderId, EmailService } from './types';
 
 type RuntimeEnv = Record<string, string | undefined>;
@@ -20,6 +21,15 @@ const factories: Partial<Record<EmailProviderId, EmailProviderFactory>> = {
 		createSendgridEmailService({
 			apiKey: getEnvVar('SENDGRID_API_KEY'),
 			defaultFrom: getEnvVar('EMAIL_FROM'),
+		}),
+	zeptomail: () =>
+		createZeptoMailEmailService({
+			token: getEnvVar('ZEPTOMAIL_TOKEN'),
+			defaultFrom: getEnvVar('EMAIL_FROM'),
+			url: getEnvVar('ZEPTOMAIL_URL', true) || undefined,
+			// Optional explicit bounce address; if omitted, the provider will
+			// fall back to the default "from" address.
+			bounceAddress: getEnvVar('ZEPTOMAIL_BOUNCE_ADDRESS', true) || undefined,
 		}),
 };
 

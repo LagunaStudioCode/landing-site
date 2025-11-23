@@ -9,7 +9,7 @@ const env = import.meta.env;
 const archiveRecipients =
 	env.EMAIL_BCC
 		?.split(',')
-		.map((value) => value.trim())
+		.map((value: string) => value.trim())
 		.filter(Boolean) ?? [];
 const archiveBcc = archiveRecipients.length ? archiveRecipients : undefined;
 
@@ -23,25 +23,17 @@ const getCompanyInbox = (): string => {
 	return inbox;
 };
 
-const multiSelect = <T extends z.ZodTypeAny>(schema: T) =>
-	z.preprocess(
-		(value) => {
-			if (Array.isArray(value)) return value;
-			if (value === null || value === undefined || value === '') return [];
-			return [value];
-		},
-		z.array(schema)
-	);
-
 const contactSchema = z.object({
 	name: z.string().min(2, 'Name is required.'),
 	email: z.string().email('Valid email required.'),
 	context: z.string().optional(),
-	needs: multiSelect(
-		z.enum(['strategy', 'workflow', 'training', 'governance'], {
-			required_error: 'Select at least one need.',
-		})
-	),
+	needs: z
+		.array(
+			z.enum(['strategy', 'workflow', 'training', 'governance'], {
+				required_error: 'Select at least one need.',
+			})
+		)
+		.optional(),
 	message: z.string().max(2000).optional(),
 });
 

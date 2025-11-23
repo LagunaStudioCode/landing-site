@@ -21,7 +21,7 @@ export type EmailEnvelope = {
 	metadata?: Record<string, string | number>;
 };
 
-export type EmailProviderId = 'console' | 'sendgrid' | 'twilio' | 'mailgun';
+export type EmailProviderId = 'console' | 'sendgrid' | 'twilio' | 'mailgun' | 'zeptomail';
 
 export type EmailResponse = {
 	providerId: EmailProviderId;
