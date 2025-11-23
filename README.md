@@ -1,6 +1,18 @@
-# Spacewalkers Marketing Site
+# Laguna Studio Code Landing
 
-Static marketing + investor site powered by Astro 5 with Tailwind 4 styles.
+Static landing page for Laguna Studio Code, powered by Astro 5 and Tailwind 4.
+
+## Project Overview
+
+This repository contains the source for the Laguna Studio Code landing page. It serves as a digital business card and capabilities showcase for a collective of senior software engineers.
+
+Key sections:
+
+* **Hero**: Brand introduction ("Engineering First").
+* **Stack & Playground**: Overview of technical capabilities (Full-Stack, AI, Creative Coding, Infra).
+* **Build Log**: A showcase of recent experiments and shipped projects.
+* **The Crew**: Studio philosophy and values.
+* **Contact**: A "Signal" based contact form for project requests and collaborations.
 
 ## Local Development
 
@@ -11,49 +23,48 @@ pnpm dev
 
 The dev server runs on `http://localhost:4321`. Use `pnpm build` to generate production assets and `pnpm preview` to test the build locally.
 
-## Contact + Investor Forms
+## Contact Form & Actions
 
-Both the marketing contact form (`src/pages/index.astro`) and investor request form (`src/pages/investors.astro`) submit through [Astro Actions](https://docs.astro.build/en/guides/actions/). Each submission triggers two emails via the strategy-pattern email service:
+The contact form (`src/pages/index.astro`) submits to a server-side action defined in `src/actions/index.ts`. Submissions are processed using the **Email Service Strategy Pattern**.
 
-1. **Client confirmation** – reassuring copy goes to the submitter.
-2. **Internal triage** – structured summary goes to `EMAIL_COMPANY_INBOX`.
+When a user sends a signal (Project Request, Collaboration, or Hello):
 
-All email routing is centralized in `src/lib/email/`, so swapping providers never requires frontend changes.
+1. **Client Confirmation**: The sender receives an auto-reply acknowledging receipt.
+2. **Internal Signal**: The team receives a structured email at `EMAIL_COMPANY_INBOX` containing the payload and signal type.
 
-### Environment configuration
+### Environment Configuration
 
 1. Copy `.env.example` to `.env`.
-2. Set `EMAIL_PROVIDER` to `console` (logs payloads locally) or `sendgrid`.
-3. Provide the base routing variables:
+2. Configure the email provider (console, sendgrid, or zeptomail).
+3. Set the routing variables:
 
 | Variable | Description |
 | --- | --- |
-| `EMAIL_PROVIDER` | `console` for dev logging, `sendgrid` for SendGrid REST delivery, or `zeptomail` for ZeptoMail API delivery. |
-| `EMAIL_FROM` | Default verified sender (used when actions omit `from`). |
-| `EMAIL_CONFIRMATION_FROM` | Optional override for confirmation emails. |
-| `EMAIL_COMPANY_INBOX` | Internal triage inbox for new submissions. |
-| `EMAIL_BCC` | Optional archive recipient (leave blank to disable). |
-| `SENDGRID_API_KEY` | Required when `EMAIL_PROVIDER=sendgrid`. |
-| `ZEPTOMAIL_TOKEN` | Required when `EMAIL_PROVIDER=zeptomail`; full token including the `Zoho-enczapikey` prefix. |
-| `ZEPTOMAIL_URL` | Optional override for the ZeptoMail API base URL (defaults to `https://api.zeptomail.com/v1.1/email`). |
+| `EMAIL_PROVIDER` | `console` (dev), `sendgrid`, or `zeptomail`. |
+| `EMAIL_FROM` | Default verified sender address. |
+| `EMAIL_CONFIRMATION_FROM` | Optional override for auto-replies. |
+| `EMAIL_COMPANY_INBOX` | Destination for internal notifications. |
+| `EMAIL_BCC` | Optional archive address. |
+| `SENDGRID_API_KEY` | Required if using SendGrid. |
+| `ZEPTOMAIL_TOKEN` | Required if using ZeptoMail. |
+| `ZEPTOMAIL_URL` | Optional custom ZeptoMail API URL. |
 
-Restart the dev server after changing provider-specific env vars so the email registry picks up the new configuration.
-
-### Adding new providers
-
-1. Create `src/lib/email/providers/<provider>.ts` implementing the `EmailService` contract from `src/lib/email/types.ts`.
-2. Register the factory inside `src/lib/email/registry.ts`.
-3. Document any new env vars in `.env.example` and the table above.
-
-## Project structure
+## Project Structure
 
 ```text
 src/
-├── actions/          # Astro Actions for form submissions
-├── layouts/          # Shared page layouts
-├── lib/email/        # Provider-agnostic email service abstraction
-├── pages/            # Marketing + investor routes
-└── styles/           # Global CSS
+├── actions/          # Server-side form handling (Zod validation)
+├── assets/           # Static assets (logos, backgrounds)
+├── layouts/          # Base HTML layout (metadata, global styles)
+├── lib/email/        # Email provider abstraction
+├── pages/            # Main landing page (index.astro)
+└── styles/           # Global CSS & Tailwind theme
 ```
 
-Refer to [the Astro docs](https://docs.astro.build) for framework-specific details.
+## Design System
+
+The site uses a "Dark Future" aesthetic:
+
+* **Background**: Space Black (`#0B0C10`)
+* **Accents**: Neon Cyan (`#66FCF1`) & Deep Magenta (`#C3073F`)
+* **Typography**: System sans-serif stack (clean, engineering-focused)
