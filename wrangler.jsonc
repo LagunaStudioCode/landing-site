@@ -1,6 +1,6 @@
 {
 	"main": "dist/_worker.js/index.js",
-	"name": "marketing-site",
+	"name": "lsc-marketing-site",
   "compatibility_date": "2025-11-23",
   "compatibility_flags": [
     "nodejs_compat",
