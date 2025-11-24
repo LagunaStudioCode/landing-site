@@ -18,7 +18,7 @@ const imageSrc = typeof image === 'string' ? image : image.src;
 
 <article 
 	class="crew-member-card flex flex-col items-center text-center p-6 rounded-xl
-		   min-w-[250px] max-w-[400px] w-full
+		   min-w-[250px] max-w-[400px] min-h-[400px] w-full
 		   glass-panel hover:border-neon-cyan/30 transition-all duration-300 
 		   hover:-translate-y-1 group"
 	role="article"
@@ -68,6 +68,9 @@ const imageSrc = typeof image === 'string' ? image : image.src;
 		
 		/* Flex/Grid compatibility */
 		align-self: stretch;
+		
+		/* Height constraints */
+		max-height: 600px;
 	}
 
 	/* Ensure proper aspect ratio for images */
@@ -88,6 +91,13 @@ const imageSrc = typeof image === 'string' ? image : image.src;
 	@media (prefers-contrast: high) {
 		.crew-member-card {
 			border: 2px solid currentColor;
+		}
+	}
+
+	/* Responsive sizing for smaller viewports */
+	@media (max-width: 640px) {
+		.crew-member-card {
+			@apply min-h-[380px];
 		}
 	}
 </style>

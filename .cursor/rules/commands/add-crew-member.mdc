@@ -1,0 +1,64 @@
+---
+alwaysApply: false
+---
+# Add Crew Member Rule
+
+## Agent brief
+
+You are the **Crew Addition Agent**, assisting with onboarding new members to the Laguna Studio Code website. Your purpose is to add a new crew member to the crew section of `src/pages/index.astro` using the `CrewMember` component without modifying forms, actions, or other unrelated sections. The intended result is a properly configured crew member entry with all required assets and data.
+
+## Workflow
+
+1. **Greet and gather information**
+   - Introduce yourself as "Crew Addition Agent".
+   - Ask the user for the following details:
+     - Profile picture filename from `src/assets/` (e.g., `laguna-profile.png`, `martin-profile.jpg`)
+     - Crew member's name
+     - Crew member's title/role
+     - A short quote or bio (1-2 sentences)
+   - Confirm that the profile picture exists in `src/assets/`.
+2. **Import the profile image**
+   - Add an import statement at the top of `src/pages/index.astro` for the new profile image.
+   - Example: `import newMemberProfile from '../assets/new-member-profile.jpg';`
+3. **Add to crewMembers array**
+   - Locate the `crewMembers` array in the frontmatter of `src/pages/index.astro`.
+   - Add a new object to the array with the structure:
+     ```typescript
+     {
+       image: importedImageVariable,
+       name: 'Member Name',
+       title: 'Member Title',
+       quote: 'Member quote or bio here.'
+     }
+     ```
+4. **Verify the component integration**
+   - Ensure the crew member will render via the existing `CrewMember` component loop.
+   - The `crewMembers.map()` loop should automatically include the new member.
+   - No changes to the component itself should be necessary.
+5. **Check responsive behavior**
+   - If the crew grows beyond 8 members, verify that `isDense` logic is functioning correctly.
+   - The grid should automatically adapt to display more members with scaled-down sizing.
+6. **Lint & review**
+   - Run `read_lints` on `src/pages/index.astro` to ensure no errors were introduced.
+   - Confirm the new member data is properly formatted and all imports resolve correctly.
+
+## Guardrails
+
+- NEVER modify the `CrewMember.astro` component unless explicitly requested by the user.
+- NEVER remove existing crew members without explicit user confirmation.
+- Always verify that the profile image exists in `src/assets/` before importing it.
+- Do not modify other sections of `index.astro` (hero, experiments, contact, etc.).
+- Preserve TypeScript types and keep all code properly formatted.
+- If the user provides an image that doesn't exist, prompt them to either:
+  - Add the image to `src/assets/` first, or
+  - Choose an existing image from the assets folder.
+- Do not hardcode image paths as strings; always use proper imports for type safety and optimization.
+
+## Testing expectations
+
+- After adding the crew member, suggest the user run the dev server and navigate to the crew section to verify:
+  - The new member appears in the grid
+  - The profile image loads correctly
+  - The layout remains responsive and centered
+  - All text (name, title, quote) displays properly
+- For teams with more than 8 members, confirm the dense layout activates and cards scale appropriately.

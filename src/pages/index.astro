@@ -2,12 +2,55 @@
 import Layout from '../layouts/Layout.astro';
 import { actions, isInputError } from 'astro:actions';
 import logo from '../assets/laguna-bay-logo.png';
+import CrewMember from '../components/CrewMember.astro';
+import lagunaProfile from '../assets/laguna-profile.png';
+import martinProfile from '../assets/martin-profile.jpg';
+import joeProfile from '../assets/joe-profile.png';
+import panosProfile from '../assets/panos-profile.png';
+import luisProfile from '../assets/luis-profile.png';
 
 const contactResult = Astro.getActionResult(actions.contactForm);
 const contactInputErrors = isInputError(contactResult?.error) ? contactResult.error.fields : {};
 const contactHasInputErrors = Object.keys(contactInputErrors).length > 0;
 const contactGeneralError = contactResult?.error && !contactHasInputErrors;
 const contactSuccess = contactResult && !contactResult.error;
+
+// Crew members data
+const crewMembers = [
+	{
+		image: lagunaProfile,
+		name: 'Jimmy Headrick',
+		title: 'Chief Enginerd',
+		quote: 'I love you!'
+	},
+	{
+		image: martinProfile,
+		name: 'Martin Shaw',
+		title: 'PC App Software Tester',
+		quote: 'I test software the way a cat tests gravity: methodically, repeatedly, and with great satisfaction when things break unexpectedly.'
+	},
+    {
+        image: joeProfile,
+        name: 'Joe Coleman',
+        title: 'Software Engineer',
+        quote: 'If at first you don\'t succeed... maybe you shouldn\'t take up skydiving.'
+    },
+    {
+        image: panosProfile,
+        name: 'Panos /dev/null',
+        title: 'Archwizard of Architecture',
+        quote: 'Code...erm...finds a way'
+    },
+    {
+        image: luisProfile,
+        name: 'Luis Ibarra',
+        title: 'Software Engineer',
+        quote: 'Strive for progress, not perfection.'
+    }
+];
+
+// Determine if we need dense layout (more than 8 members)
+const isDense = crewMembers.length > 8;
 
 export const prerender = false;
 ---
@@ -178,14 +221,29 @@ export const prerender = false;
 
         <!-- The Crew (About) -->
         <section id="crew" class="py-24 bg-space-black border-t border-white/5">
-            <div class="max-w-4xl mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-8">Who Are We?</h2>
-                <p class="text-xl text-gray-300 mb-12 leading-relaxed">
-                    We aren't salespeople. We're the engineers you usually wish you could talk to directly. 
-                    We've built products with larger companies but prefer the freedom of the studio.
-                </p>
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Meet The Crew</h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        We aren't salespeople. We're the engineers you usually wish you could talk to directly. 
+                        We've built products with larger companies but prefer the freedom of the studio.
+                    </p>
+                </div>
                 
-                <div class="grid md:grid-cols-3 gap-8 text-left">
+                <!-- Crew Grid -->
+                <div class={`crew-grid ${isDense ? 'crew-grid-dense' : ''}`}>
+                    {crewMembers.map((member) => (
+                        <CrewMember
+                            image={member.image}
+                            name={member.name}
+                            title={member.title}
+                            quote={member.quote}
+                        />
+                    ))}
+                </div>
+
+                <!-- Core Values -->
+                <div class="grid md:grid-cols-3 gap-8 text-left mt-16">
                     <div class="p-6 rounded-lg bg-white/5 border border-white/10">
                         <div class="text-neon-cyan font-bold mb-2 text-lg">Code over Slides</div>
                         <p class="text-sm text-gray-400">We prefer functional prototypes to polished pitch decks. We show, don't just tell.</p>
@@ -335,5 +393,67 @@ export const prerender = false;
     @keyframes pulse {
         0%, 100% { opacity: 1; }
         50% { opacity: .8; }
+    }
+
+    /* Crew Grid Layout */
+    .crew-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        justify-content: center;
+        align-items: start;
+        margin: 0 auto;
+        width: min(1200px, 100%);
+    }
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        justify-content: center;
+        align-items: start;
+        margin: 0 auto;
+        width: min(1200px, 100%);
+    }
+
+    /* Dense layout for teams with more than 8 members */
+    .crew-grid-dense {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 320px));
+        gap: 1.5rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .crew-grid {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .crew-grid-dense {
+            grid-template-columns: 1fr;
+            max-width: 320px;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .crew-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
+        }
+        
+        .crew-grid-dense {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .crew-grid {
+            grid-template-columns: repeat(3, minmax(270px, 1fr));
+        }
+        .crew-grid-dense {
+            grid-template-columns: repeat(3, minmax(250px, 1fr));
+        }
+        .values-grid {
+            grid-template-columns: repeat(3, minmax(250px, 1fr));
+        }
     }
 </style>

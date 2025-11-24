@@ -61,6 +61,13 @@ src/
 └── styles/           # Global CSS & Tailwind theme
 ```
 
+## Workflow Commands
+
+Cursor rules automate common onboarding tasks:
+
+* `add-email-provider.mdc` – guides the agent through adding a new outbound email provider under `src/lib/email/`. It checks the provider contract, creates the provider module, wires it into the registry, and documents the required env vars and tests.
+* `add-crew-member.mdc` – launches the Crew Addition Agent, who prompts for a profile image from `src/assets`, the member’s name, title, and quote, and then updates the `crewMembers` array in `src/pages/index.astro` via the `CrewMember` component. It enforces asset imports, grid layout updates, and density-aware behavior.
+
 ## Design System
 
 The site uses a "Dark Future" aesthetic:
