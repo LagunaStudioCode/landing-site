@@ -49,6 +49,27 @@ When a user sends a signal (Project Request, Collaboration, or Hello):
 | `ZEPTOMAIL_TOKEN` | Required if using ZeptoMail. |
 | `ZEPTOMAIL_URL` | Optional custom ZeptoMail API URL. |
 
+### Cloudflare Runtime & Secrets
+
+Actions execute inside Cloudflare Workers. Provide credentials through Wrangler secrets or the dashboard so they are exposed via `Astro.locals.runtime('cloudflare').env`:
+
+```bash
+pnpm wrangler secret put EMAIL_FROM
+pnpm wrangler secret put ZEPTOMAIL_TOKEN
+```
+
+Local development still reads from `.env`, while `wrangler dev --remote` proxies the production bindings for end-to-end tests.
+
+### Observability & Diagnostics
+
+Structured logs (including ray IDs, colo, provider responses, and signal metadata) are sent to Cloudflare Observability:
+
+* Tail logs live with `pnpm wrangler tail --format pretty`.
+* In the dashboard, navigate to **Workers → Observability → Logs**, filter by service `lsc-marketing-site`, and search for messages starting with `actions.contactForm`.
+* Logs are also emitted to the standard Worker console so `wrangler dev` shows the same diagnostics locally.
+
+Use `wrangler dev --remote` plus `wrangler tail` to reproduce production issues while seeing the exact envelopes being accepted/rejected (no PII is logged—only counts and provider responses).
+
 ## Project Structure
 
 ```text

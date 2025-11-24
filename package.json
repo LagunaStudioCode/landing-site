@@ -17,6 +17,7 @@
     "zeptomail": "^1.0.2"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
     "wrangler": "^4.50.0"
   }
 }

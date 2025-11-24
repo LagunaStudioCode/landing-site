@@ -17,6 +17,13 @@
 		"directory": "./dist"
 	},
 	"observability": {
-    "enabled": true
-  }
+		"enabled": true,
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"persist": true,
+			// Configure destinations in the Cloudflare dashboard when routing logs
+			"destinations": []
+		}
+	}
 }
